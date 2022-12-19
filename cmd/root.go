@@ -4,12 +4,39 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"errors"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
+type outputFormat string
+
+const (
+	defaultFormat outputFormat = "default"
+	jsonFormat    outputFormat = "json"
+)
+
+func (o *outputFormat) String() string {
+	return string(*o)
+}
+
+func (o *outputFormat) Set(v string) error {
+	switch v {
+	case "default", "json":
+		*o = outputFormat(v)
+		return nil
+	default:
+		return errors.New(`unsupported output format. accepted values are "default", "json"`)
+	}
+}
+
+func (o *outputFormat) Type() string {
+	return "outputFormat"
+}
+
 var silenceOutput bool
+var format outputFormat
 
 var rootCmd = &cobra.Command{
 	Use:   "datastore-cmd",
@@ -25,6 +52,7 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().BoolVarP(&silenceOutput, "silent", "s", false, "Hide command output")
+	rootCmd.PersistentFlags().VarP(&format, "output", "o", "Output format type (default, json)")
 	rootCmd.PersistentFlags().StringP("project-id", "p", "", "Datastore project id")
 	rootCmd.MarkPersistentFlagRequired("project-id")
 }

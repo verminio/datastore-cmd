@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -15,5 +17,15 @@ func getProjectId(cmd *cobra.Command) (projectId string) {
 }
 
 func render(res interface{}) {
-	fmt.Printf("%v\n", res)
+	switch format {
+	case jsonFormat:
+		encoder := json.NewEncoder(os.Stdout)
+		if err := encoder.Encode(res); err != nil {
+			panic(err)
+		}
+		return
+	default:
+		fmt.Printf("%v\n", res)
+		return
+	}
 }

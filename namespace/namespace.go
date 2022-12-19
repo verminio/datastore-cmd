@@ -8,12 +8,10 @@ import (
 )
 
 type Namespace struct {
-	Name string `json:"name"`
+	Name string `json:"namespace"`
 }
 
-type Namespaces []Namespace
-
-func List(projectId string) (Namespaces, error) {
+func List(projectId string) (*[]Namespace, error) {
 	ctx := context.Background()
 	client, err := datastore.NewClient(ctx, projectId)
 
@@ -22,16 +20,16 @@ func List(projectId string) (Namespaces, error) {
 	}
 	query := datastore.NewQuery("__namespace__").KeysOnly()
 
-	res, err := client.GetAll(ctx, query, nil)
+	keys, err := client.GetAll(ctx, query, nil)
 
 	if err != nil {
 		return nil, fmt.Errorf("namespace.List: %v", err)
 	}
 
-	namespaces := Namespaces{}
-	for _, v := range res {
-		namespaces = append(namespaces, Namespace{Name: v.Name})
+	res := &[]Namespace{}
+	for _, v := range keys {
+		*res = append(*res, Namespace{Name: v.Name})
 	}
 
-	return namespaces, nil
+	return res, nil
 }
