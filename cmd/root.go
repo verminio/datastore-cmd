@@ -9,6 +9,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var silenceOutput bool
+
 var rootCmd = &cobra.Command{
 	Use:   "datastore-cmd",
 	Short: "Command line interface for accessing GCP Datastore",
@@ -22,6 +24,7 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.PersistentFlags().BoolVarP(&silenceOutput, "silent", "s", false, "Hide command output")
 	rootCmd.PersistentFlags().StringP("project-id", "p", "", "Datastore project id")
 	rootCmd.MarkPersistentFlagRequired("project-id")
 }

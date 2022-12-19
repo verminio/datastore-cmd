@@ -12,9 +12,14 @@ import (
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List namespaces",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		projectId := getProjectId(cmd)
-		namespace.List(projectId)
+		namespaces, err := namespace.List(projectId)
+		if err != nil {
+			return err
+		}
+		render(namespaces)
+		return nil
 	},
 }
 
