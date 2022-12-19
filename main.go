@@ -7,7 +7,8 @@ import (
 )
 
 func main() {
+	fmt.Println("=====================")
 	fmt.Println("GCP Datastore Command")
-
+	fmt.Println("=====================")
 	cmd.Execute()
 }

@@ -9,8 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var ProjectId string
-
 var rootCmd = &cobra.Command{
 	Use:   "datastore-cmd",
 	Short: "Command line interface for accessing GCP Datastore",
@@ -24,7 +22,6 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&ProjectId, "project-id", "p", "", "Datastore project id")
-
+	rootCmd.PersistentFlags().StringP("project-id", "p", "", "Datastore project id")
 	rootCmd.MarkPersistentFlagRequired("project-id")
 }
