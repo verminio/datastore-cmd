@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/verminio/datastore-cmd/cmd"
+)
 
 func main() {
-    fmt.Println("GCP Datastore Command")
+	cmd.Execute()
 }
